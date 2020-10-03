@@ -24,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initNavController();
-        navController.navigate(R.id.boardFragment);
+
+        // если возвратит true то скрыть
+        // если возвратит false показать boardFragment
+        // 4ый урок 40минута
+        if (!Prefs.instance.getShowState())
+            navController.navigate(R.id.boardFragment);
 
     }
 
@@ -41,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        // destination - это фрагмент который открывается
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.formFragment){
+                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.formFragment) {
                     navView.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
@@ -62,4 +68,5 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
+
 }

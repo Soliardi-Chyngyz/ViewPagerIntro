@@ -6,22 +6,25 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.taskapp.Prefs;
 import com.example.taskapp.R;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 public class BoardFragment extends Fragment {
     private ViewPager viewPager;
     private TextView back, skip;
-    private Button openPage;
+    private DotsIndicator dotsIndicator;
 
 
     @Override
@@ -31,60 +34,89 @@ public class BoardFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dotsIndicator = view.findViewById(R.id.dots_indicator);
         viewPager = view.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new BoardAdapter());
-//        viewPager.addOnPageChangeListener();
+        BoardAdapter boardAdapter = new BoardAdapter();
+        viewPager.setAdapter(boardAdapter);
+        dotsIndicator.setViewPager(viewPager);
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+
+        boardAdapter.setOnStartClickListener(new BoardAdapter.OnStartClickListener() {
             @Override
-            public void handleOnBackPressed() {
-                // вызываем активити
-                requireActivity().finish();
+            public void onClick() {
+                openHome();
             }
         });
+
         back = view.findViewById(R.id.back);
+        skip = view.findViewById(R.id.skip);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("BACK", "onClick: back" + view);
+                Log.e("TAG", "onClick: back");
+                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
                 if (viewPager.getCurrentItem() > 0)
                     viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
             }
         });
-        skip = view.findViewById(R.id.skip);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("SKIP", "onClick: skip" + view);
-                if (viewPager.getCurrentItem() < (viewPager.getChildCount() - 1))
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+//                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
+//                if (viewPager.getCurrentItem() < (viewPager.getChildCount() - 1))
+//                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                openHome();
             }
         });
 
-        openPage = view.findViewById(R.id.btn);
-        if (viewPager.getCurrentItem() == 2) {
-            openPage.setVisibility(View.VISIBLE);
-        }
-        openPage.setOnClickListener(new View.OnClickListener() {
+
+        // это выход из приложения
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
-            public void onClick(View view) {
-                
+            public void handleOnBackPressed() {
+                // вызываем активити, так как в проекте у нас одно активити
+                // он закроет только его .finish();  но если бы были еще мы бы закрыли все
+                // активити
+                // requireActivity()  - родительское активити
+                requireActivity().finish();
             }
         });
+    }
 
-
+    private void openHome () {
+        // сохранение состояния
+        Prefs.instance.saveShowState();
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigateUp();
+    }
+}
+//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+////                }
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
 
 //        switch (view.getId()) {
-//            case (R.id.back) :
+//            case (R.id.back):
 //                if (viewPager.getCurrentItem() > 0)
 //                    viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
 //                break;
-//            case (R.id.skip) :
+//            case (R.id.skip):
 //                if (viewPager.getCurrentItem() < (viewPager.getChildCount() - 1))
 //                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
 //                break;
 //        }
-    }
-}
+

@@ -16,10 +16,11 @@ import android.widget.EditText;
 import android.widget.TextClock;
 
 //import com.example.bottomnav.ui.home.TaskAdapter;
+import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
 
-public class FormFragment extends Fragment{
+public class FormFragment extends Fragment {
 
     private EditText editText;
     private TextClock textClock;
@@ -51,7 +52,7 @@ public class FormFragment extends Fragment{
             Task task = (Task) getArguments().getSerializable("task");
             if (task != null) {
                 editText.setText(task.getTitle());
-                textClock.setText(task.getCreatedAt());
+                //textClock.setText(task.getCreatedAt());
             }
         }
     }
@@ -59,13 +60,14 @@ public class FormFragment extends Fragment{
     private void save() {
 
         String itemTitle = editText.getText().toString();
-        String itemClock = textClock.getText().toString();
+        String itemClock = "изменено: " + textClock.getText().toString();
 
         Task task = new Task(itemTitle, itemClock);
         Bundle bundle = new Bundle();
+        App.instance.getAppDataBase().taskDao().insert(task);
 
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             bundle.putSerializable("result", task);
             getParentFragmentManager().setFragmentResult("updateForm", bundle);
         } else {

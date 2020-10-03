@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 //import com.example.bottomnav.R;
 //import com.example.bottomnav.Task;
 
+import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
 
@@ -29,19 +30,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     // 1.3
     private List<Task> list;
     private int selectedPosition = 0;
+    // создали переменную
     private ItemClickListener listener;
 
+
     // 1.4
-    public TaskAdapter(List<Task> list, ItemClickListener listener) {
+    public TaskAdapter(List<Task> list) {
         this.list = list;
-        this.listener = listener;
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // применить к одной вьюшке другую вьюшку, ViewHolder приюавляет новый лайаут list_task
+        // применить к одной вьюшке другую вьюшку, ViewHolder прибавляет новый лайаут list_task
         // для отображение списка, каждыый раз он создает новый item recycler
         // и количество его столько сколько весит getItemCount()
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task, parent, false);
@@ -75,15 +77,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public void update(int position, Task task) {
-        list.remove(position);
+//        list.remove(position);
         list.add(position, task);
         notifyDataSetChanged();
 
     }
+//    это на случай если мы хотим просто удалить из базы -_-
+//    public Task getItem(int position) {
+//        return list.get(position);
+//    }
+
+    public void deleteItem(int position) {
+        Task task = list.get(position);
+        // здесь удалили из базы
+        App.instance.getAppDataBase().taskDao().delete(task);
+        // а здесь уже из списка
+        list.remove(task);
+        notifyItemRemoved(position);
+    }
 
 
     // порядок заполнения Адаптера 1
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textTitle, textTime;
         private Task task;
         public int position;
@@ -92,7 +107,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
             textTime = itemView.findViewById(R.id.textTime);
-            itemView.setOnLongClickListener(this);
+            // откуда он знает что нужно открыть FormFragment
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // связан с itemView.setOnLongClickListener(this);
+                    selectedPosition = getAdapterPosition();
+                    notifyItemChanged(selectedPosition);
+                    if (listener != null)
+                        listener.onItemClick(getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    listener.onLongClick(getAdapterPosition());
+                    return true;
+                }
+            });
+
+
         }
 
         public void bind(Task task, int position) {
@@ -104,22 +138,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         }
 
-        @Override
-        public boolean onLongClick(View view) {
-            selectedPosition = getAdapterPosition();
-            notifyItemChanged(selectedPosition);
-//            notifyItemChanged(selectedPosition);
-            if (listener != null)
-                listener.onItemClick(getAdapterPosition());
-            return true;
-        }
     }
 
-    public void setOnClickListener(ItemClickListener listener) {
+    public void setList (List <Task> list) {
+        this.list.addAll (list);
+        notifyDataSetChanged();
+    }
+
+    public void setList2 (List <Task> list) {
+        this.list.retainAll (list);
+        notifyDataSetChanged();
+    }
+
+
+    // конструктор для этой переменной чтобы обращаться 1.3
+    public void setOnItemListener(ItemClickListener listener) {
         this.listener = listener;
     }
 
+    // создаем первым 1.1
     public interface ItemClickListener {
         void onItemClick(int position);
+        void onLongClick(int position);
     }
 }
