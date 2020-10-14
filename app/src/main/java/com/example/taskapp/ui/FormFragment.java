@@ -60,16 +60,18 @@ public class FormFragment extends Fragment {
     private void save() {
 
         String itemTitle = editText.getText().toString();
-        String itemClock = "изменено: " + textClock.getText().toString();
+        String itemClock = textClock.getText().toString();
 
         Task task = new Task(itemTitle, itemClock);
         Bundle bundle = new Bundle();
         App.instance.getAppDataBase().taskDao().insert(task);
 
-
         if (getArguments() != null) {
+            task.setTime("изменено " + textClock.getText().toString());
             bundle.putSerializable("result", task);
+
             getParentFragmentManager().setFragmentResult("updateForm", bundle);
+
         } else {
             bundle.putSerializable("task", task);
             getParentFragmentManager().setFragmentResult("form", bundle);

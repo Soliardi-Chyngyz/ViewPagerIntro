@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class Prefs {
 
-    // для работы с настройками
+    // SharedPreferences для работы с настройками
     private SharedPreferences preferences;
     public static Prefs instance;
 
@@ -26,8 +26,6 @@ public class Prefs {
     public void saveShowState() {
         preferences.edit().putBoolean("showState", true).apply();
     }
-
-
 
     public boolean getShowState () {
         // на случай если по ключу showState ничего ненайдет, то он по умолчанию

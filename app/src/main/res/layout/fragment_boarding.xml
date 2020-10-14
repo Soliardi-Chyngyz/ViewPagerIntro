@@ -27,7 +27,6 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </androidx.viewpager.widget.ViewPager>
 
     <TextView
@@ -54,7 +53,7 @@
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:dotsColor="#CA3B3B"
+        app:dotsColor="#AE9A9A"
         app:dotsCornerRadius="8dp"
         app:dotsSize="16dp"
         app:dotsSpacing="4dp"
@@ -67,6 +66,6 @@
         app:layout_constraintStart_toStartOf="@+id/view_pager"
         app:layout_constraintTop_toTopOf="parent"
         app:progressMode="true"
-        app:selectedDotColor="#AE9A9A" />
+        app:selectedDotColor="#CA3B3B" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

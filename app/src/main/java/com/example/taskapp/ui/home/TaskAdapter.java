@@ -1,6 +1,4 @@
 package com.example.taskapp.ui.home;
-
-
 import android.content.ClipData;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -33,12 +31,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     // создали переменную
     private ItemClickListener listener;
 
-
     // 1.4
     public TaskAdapter(List<Task> list) {
         this.list = list;
     }
-
 
     @NonNull
     @Override
@@ -54,38 +50,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     // этот мемонт для заполнения каждого item recycler данными
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(list.get(position), position);
-        holder.itemView.setSelected(selectedPosition == position);
+        holder.itemView.setSelected(selectedPosition == position);          // ?
         if (position % 2 == 0)
             holder.itemView.setBackgroundColor(Color.GRAY);
         else
             holder.itemView.setBackgroundColor(Color.WHITE);
     }
 
-
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    public void setItem(Task task) {
+    // добавляем item
+    public void addItem(Task task) {
         // каждый раз теперь он будет добавлять item на нулевой индекс (то есть вверх)
-//        list.set(selectedPosition, task);
         list.add(0, task);
         notifyItemChanged(0);
-        //        notifyItemChanged(list.indexOf(task));
-//        notifyItemChanged(list.size() - 1);
     }
 
+    // устанавливает весь лист
+    public void setList(List<Task> list) {
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * этот метод обновляет item по позиции
+     */
     public void update(int position, Task task) {
-//        list.remove(position);
+        list.remove(position);
         list.add(position, task);
         notifyDataSetChanged();
-
     }
-//    это на случай если мы хотим просто удалить из базы -_-
-//    public Task getItem(int position) {
-//        return list.get(position);
-//    }
 
     public void deleteItem(int position) {
         Task task = list.get(position);
@@ -93,6 +90,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         App.instance.getAppDataBase().taskDao().delete(task);
         // а здесь уже из списка
         list.remove(task);
+        // исчезнит на глазах
         notifyItemRemoved(position);
     }
 
@@ -125,8 +123,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                     return true;
                 }
             });
-
-
         }
 
         public void bind(Task task, int position) {
@@ -137,16 +133,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 textTime.setText(task.getCreatedAt());
             }
         }
-
     }
 
-    public void setList (List <Task> list) {
-        this.list.addAll (list);
-        notifyDataSetChanged();
-    }
-
-    public void setList2 (List <Task> list) {
-        this.list.retainAll (list);
+    public void setList2(List<Task> list) {
+        this.list.retainAll(list);
         notifyDataSetChanged();
     }
 

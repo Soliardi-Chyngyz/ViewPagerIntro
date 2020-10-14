@@ -1,9 +1,6 @@
 package com.example.taskapp.ui.home;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +13,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 //import com.example.bottomnav.R;
 //import com.example.bottomnav.Task;
 import com.example.taskapp.App;
-import com.example.taskapp.OnItemClickListener;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -57,11 +48,15 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new TaskAdapter(list);
+        list.clear();
         List<Task> list = App.instance.getAppDataBase().taskDao().getAll();
+        // list - содержит результат всех действий 57строки
+        // list равно значению которое 57 возвращают
         adapter.setList(list);
     }
 
@@ -116,16 +111,16 @@ public class HomeFragment extends Fragment {
 
                 // отправляет позицию -Ю-
 
-                // это на случай если мы хотим просто ужалить из базы -_-
+                // это на случай если мы хотим просто удалить из базы -_-
 //                delete(adapter.getItem(position));
             }
         });
     }
 
     // это на случай если мы хотим просто ужалить из базы -_-
-//    private void delete(Task task) {
-//        App.instance.getAppDataBase().taskDao().delete(task);
-//    }
+    //    private void delete(Task task) {
+    //        App.instance.getAppDataBase().taskDao().delete(task);
+    //    }
 
     // метод для отображения списка
     private void initList() {
@@ -150,7 +145,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Log.i("TAG", "onFragmentResult: " + result.getString("task"));
-                adapter.setItem((Task) result.getSerializable("task"));
+                adapter.addItem((Task) result.getSerializable("task"));
             }
         });
 
@@ -178,7 +173,7 @@ public class HomeFragment extends Fragment {
     }
 
     private boolean flag = true;
-    private ArrayList <Task> oldList = new ArrayList<>();
+    private ArrayList<Task> oldList = new ArrayList<>();
 
     private void sides() {
         if (flag) {
@@ -189,10 +184,12 @@ public class HomeFragment extends Fragment {
                     return task.getTitle().compareTo(t1.getTitle());
                 }
             });
-            adapter.setList2(list);
+            adapter.notifyDataSetChanged();
+//            adapter.setList(list);
         } else {
             list.clear();
             adapter.setList(oldList);
+            oldList.clear();
         }
         // создали бесконечный цикл true - false - true...
         flag = !flag;

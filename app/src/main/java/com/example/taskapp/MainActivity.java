@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         // если возвратит true то скрыть
         // если возвратит false показать boardFragment
         // 4ый урок 40минута
+        // а здесь уже получаем это состояние
         if (!Prefs.instance.getShowState())
             navController.navigate(R.id.boardFragment);
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     navView.setVisibility(View.VISIBLE);
                 }
-                if (destination.getId() == R.id.boardFragment) {
+                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.navigation_profile) {
                     getSupportActionBar().hide();
                 } else {
                     getSupportActionBar().show();

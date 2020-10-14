@@ -68,17 +68,18 @@ public class NotificationsFragment extends Fragment {
 
             private void createFile() {
 
+                // этот метод создает папку
                 File folder = new File(Environment.getExternalStorageState(), "TaskApp");
-//                // этот метод создает папку
                 folder.mkdir();
 
-                // folder.list(); дастнет все файлы этой папки
+                // folder.list(); дастает все файлы этой папки
                 // folder.listFiles(); достанет в виде файлов
                 // folder.mkdirs(); для создании директории
                 // folder.isFile(); проверка это файл       или
                 // file.exists();
                 // file.length() / 1024 / 1024 получим биты / мгб
-                // file.ge      tNa// когда были сделаны последние изменения
+                // file.getNa
+                // когда были сделаны последние изменения
                 // file.lastModified();
                 File file = new File("note.txt");
                 try {

@@ -56,7 +56,6 @@ public class BoardFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("TAG", "onClick: back");
                 Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
                 if (viewPager.getCurrentItem() > 0)
                     viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);

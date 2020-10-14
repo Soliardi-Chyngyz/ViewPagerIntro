@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_formFragment"
-            app:destination="@id/formFragment" />
+            app:destination="@id/formFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -33,7 +35,7 @@
         tools:layout="@layout/fragment_form" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.taskapp.ui.Profile.Profile"
+        android:name="com.example.taskapp.ui.Profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment

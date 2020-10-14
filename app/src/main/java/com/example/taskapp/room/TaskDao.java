@@ -10,13 +10,17 @@ import com.example.taskapp.Task;
 
 import java.util.List;
 
+// @Dao - это аннотация (обязательно)
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT * FROM task")
+    // * - это называется всё
+    // @Query("Вытащи мне всё из табоицы task")
+    @Query("SELECT * FROM task") // это синтаксис SQL
     List<Task> getAll();
 
-    @Insert // (onConflict = OnConflictStrategy.IGNORE)
+    // сохранение в таблицу Таск
+    @Insert // (onConflict = OnConflictStrategy.IGNORE) это в случае если есть такой же ключ (id)
     void insert (Task task);
 
     @Delete
