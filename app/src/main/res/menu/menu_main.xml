@@ -5,6 +5,14 @@
     tools:context=".ui.home.HomeFragment">
 
     <item
+        android:id="@+id/action_log_out"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="100"
+        android:title="@string/exit"
+        />
+
+    <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_baseline_refresh_24"
         app:showAsAction="ifRoom"

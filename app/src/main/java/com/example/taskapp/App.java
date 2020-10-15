@@ -23,6 +23,8 @@ public class App extends Application {
                 // -> здесь разрешили потому что Room работает с небольшими данными
                 .allowMainThreadQueries() // разрешение на главном потоке
                 .build();
+        // создали этот класс единожды (экземпляр)
+        // и теперь можем обращаться Prefs.instance...
         new Prefs(this);
     }
 

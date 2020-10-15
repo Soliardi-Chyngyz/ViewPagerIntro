@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +61,16 @@ public class HomeFragment extends Fragment {
         // list - содержит результат всех действий 57строки
         // list равно значению которое 57 возвращают
         adapter.setList(list);
+//        getListLive();
+    }
+
+    private void getListLive() {
+        App.instance.getAppDataBase().taskDao().getAllLive().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> tasks) {
+                adapter.setList(tasks);
+            }
+        });
     }
 
     @Override
@@ -148,8 +161,6 @@ public class HomeFragment extends Fragment {
                 adapter.addItem((Task) result.getSerializable("task"));
             }
         });
-
-
     }
 
     @Override
@@ -168,8 +179,16 @@ public class HomeFragment extends Fragment {
                 return true;
             case R.id.action_sort:
                 sides();
+            case R.id.action_log_out:
+                actionLogOut();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void actionLogOut() {
+        FirebaseAuth.getInstance().signOut();
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_navigation_home_to_phoneFragment);
     }
 
     private boolean flag = true;

@@ -15,6 +15,9 @@
             app:destination="@id/formFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_navigation_home_to_phoneFragment"
+            app:destination="@id/phoneFragment" />
     </fragment>
 
     <fragment
@@ -42,5 +45,14 @@
         android:id="@+id/boardFragment"
         android:name="com.example.taskapp.ui.Board.BoardFragment"
         android:label="fragment_boarding"
-        tools:layout="@layout/fragment_boarding" />
+        tools:layout="@layout/fragment_boarding" >
+        <action
+            android:id="@+id/action_boardFragment_to_phoneFragment"
+            app:destination="@id/phoneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneFragment"
+        android:name="com.example.taskapp.auth.PhoneFragment"
+        android:label="Подтверждение номера"
+        tools:layout="@layout/fragment_phone" />
 </navigation>

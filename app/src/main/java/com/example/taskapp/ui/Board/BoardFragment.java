@@ -10,7 +10,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ public class BoardFragment extends Fragment {
         boardAdapter.setOnStartClickListener(new BoardAdapter.OnStartClickListener() {
             @Override
             public void onClick() {
-                openHome();
+                openPhoneFr();
             }
         });
 
@@ -67,7 +66,7 @@ public class BoardFragment extends Fragment {
 //                Toast.makeText(getContext(), "clicked", Toast.LENGTH_SHORT).show();
 //                if (viewPager.getCurrentItem() < (viewPager.getChildCount() - 1))
 //                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                openHome();
+                openPhoneFr();
             }
         });
 
@@ -85,10 +84,11 @@ public class BoardFragment extends Fragment {
         });
     }
 
-    private void openHome () {
+    private void openPhoneFr() {
         // сохранение состояния
         Prefs.instance.saveShowState();
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+//        navController.navigate(R.id.action_boardFragment_to_phoneFragment);
         navController.navigateUp();
     }
 }

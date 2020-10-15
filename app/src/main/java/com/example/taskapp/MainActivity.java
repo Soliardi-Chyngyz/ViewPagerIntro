@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         if (!Prefs.instance.getShowState())
             navController.navigate(R.id.boardFragment);
 
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            navController.navigate(R.id.phoneFragment);
     }
 
     private void initNavController() {
@@ -41,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_home,
                 R.id.navigation_dashboard,
                 R.id.navigation_notifications,
-                R.id.navigation_profile)
+                R.id.navigation_profile,
+                R.id.phoneFragment)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -51,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.formFragment) {
+                if (destination.getId() == R.id.boardFragment ||
+                        destination.getId() == R.id.formFragment ||
+                        destination.getId() == R.id.phoneFragment) {
                     navView.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
