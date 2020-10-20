@@ -1,14 +1,13 @@
 package com.example.taskapp;
 
-import android.app.Application;
-
+import androidx.multidex.MultiDexApplication;
 import androidx.room.Room;
 
 import com.example.taskapp.room.AppDataBase;
 
 // нужен для того чтобы к Room можно было образаться с любого класса
 // в Манифесте нужно указать
-public class App extends Application {
+public class App extends MultiDexApplication {
 
 
     public static App instance;

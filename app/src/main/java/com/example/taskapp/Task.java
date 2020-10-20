@@ -3,6 +3,8 @@ package com.example.taskapp;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 
 // определили что Task будет хранится в базе дданных
@@ -22,6 +24,7 @@ public class Task implements Serializable {
         this.time = time;
     }
 
+    @Exclude // для firebase это поле туда передавать не обязательно (мы не хотим)
     public long getId() {
         return id;
     }
@@ -38,6 +41,7 @@ public class Task implements Serializable {
         this.title = title;
     }
 
+    @Exclude
     public String getCreatedAt() {
         return time;
     }

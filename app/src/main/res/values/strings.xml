@@ -14,8 +14,8 @@
     <string name="apply_this_field" />
     <string name="hello_from_acc_fragment" />
     <string name="here_will_your_some_data" />
-    <string name="save">Save</string>
     <string name="remove">Remove</string>
     <string name="restore">Restore</string>
     <string name="exit">exit</string>
+    <string name="save">Save</string>
 </resources>

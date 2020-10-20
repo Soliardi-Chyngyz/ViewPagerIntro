@@ -14,11 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextClock;
+import android.widget.Toast;
 
 //import com.example.bottomnav.ui.home.TaskAdapter;
 import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FormFragment extends Fragment {
 
@@ -53,6 +60,7 @@ public class FormFragment extends Fragment {
             if (task != null) {
                 editText.setText(task.getTitle());
                 //textClock.setText(task.getCreatedAt());
+
             }
         }
     }
@@ -76,7 +84,25 @@ public class FormFragment extends Fragment {
             bundle.putSerializable("task", task);
             getParentFragmentManager().setFragmentResult("form", bundle);
         }
+        saveToFireStore(task);
+    }
 
+    private void saveToFireStore(Task task) {
+
+        FirebaseFirestore.getInstance()
+                .collection("Tasks")
+                .add(task)
+                // чтобы знать результат этого метода (успешно или нет) callback
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentReference> task) {
+                        Toast.makeText(requireContext(), "result = " + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        close();
+                    }
+                });
+    }
+
+    private void close() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigateUp();
     }

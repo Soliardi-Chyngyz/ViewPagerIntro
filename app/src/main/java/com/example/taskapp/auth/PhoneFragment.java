@@ -1,6 +1,12 @@
 package com.example.taskapp.auth;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -9,15 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.os.CountDownTimer;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.example.taskapp.Prefs;
 import com.example.taskapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +25,6 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneFragment extends Fragment {
@@ -132,7 +128,13 @@ public class PhoneFragment extends Fragment {
         btnResendSms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requireSms();
+                editPhone.setVisibility(View.VISIBLE);
+                btnOpen.setVisibility(View.VISIBLE);
+                btnCarry.setVisibility(View.VISIBLE);
+                etNumber.setVisibility(View.VISIBLE);
+                btnResendSms.setVisibility(View.GONE);
+                etCode.setVisibility(View.GONE);
+                btnConfirm.setVisibility(View.GONE);
             }
         });
     }

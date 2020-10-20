@@ -1,5 +1,7 @@
 package com.example.taskapp.room;
 
+import android.media.Image;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -26,6 +28,8 @@ public interface TaskDao {
     // сохранение в таблицу Таск
     @Insert // (onConflict = OnConflictStrategy.IGNORE) это в случае если есть такой же ключ (id)
     void insert (Task task);
+
+
 
     @Delete
     void delete(Task task);

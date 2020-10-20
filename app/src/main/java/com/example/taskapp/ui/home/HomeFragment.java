@@ -1,5 +1,6 @@
 package com.example.taskapp.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,13 +28,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
@@ -55,14 +61,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        saveToAdapterAndToFireStore();
+    }
+
+    private void saveToAdapterAndToFireStore() {
         adapter = new TaskAdapter(list);
         list.clear();
         List<Task> list = App.instance.getAppDataBase().taskDao().getAll();
-        // list - содержит результат всех действий 57строки
-        // list равно значению которое 57 возвращают
+        // list - содержит результат всех действий 70строки
+        // list равно значению которое 70 возвращают
         adapter.setList(list);
 //        getListLive();
     }
+
 
     private void getListLive() {
         App.instance.getAppDataBase().taskDao().getAllLive().observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
@@ -169,6 +180,7 @@ public class HomeFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -176,11 +188,13 @@ public class HomeFragment extends Fragment {
                 list.clear();
                 App.getInstance().getAppDataBase().taskDao().nukeTable();
                 adapter.notifyDataSetChanged();
-                return true;
+                break;
             case R.id.action_sort:
                 sides();
+                break;
             case R.id.action_log_out:
                 actionLogOut();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

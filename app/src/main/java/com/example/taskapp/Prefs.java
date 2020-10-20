@@ -34,4 +34,21 @@ public class Prefs {
         // а если вернет false то он обработает код под этим условием
         return preferences.getBoolean("showState", false);
     }
+
+    public void saveName(String name) {
+        preferences.edit().putString("name", name).apply();
+    }
+
+    public String getName() {
+        return preferences.getString("name", null);
+    }
+
+    public void saveImage(String image) {
+        preferences.edit().putString("image", image).apply();
+    }
+
+    public String getImage() {
+        return preferences.getString("image", null);
+    }
+
 }

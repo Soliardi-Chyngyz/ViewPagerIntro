@@ -103,8 +103,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textTitle = itemView.findViewById(R.id.textTitle);
-            textTime = itemView.findViewById(R.id.textTime);
+            textTitle = itemView.findViewById(R.id.textTitle2);
+            textTime = itemView.findViewById(R.id.textTime2);
             // откуда он знает что нужно открыть FormFragment
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

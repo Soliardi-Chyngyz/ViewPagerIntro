@@ -40,7 +40,13 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.taskapp.ui.Profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_editFragment"
+            app:destination="@id/editFragment"
+            app:enterAnim="@anim/slide_out_left"
+            app:exitAnim="@anim/slide_in_right" />
+    </fragment>
     <fragment
         android:id="@+id/boardFragment"
         android:name="com.example.taskapp.ui.Board.BoardFragment"
@@ -55,4 +61,9 @@
         android:name="com.example.taskapp.auth.PhoneFragment"
         android:label="Подтверждение номера"
         tools:layout="@layout/fragment_phone" />
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.taskapp.ui.Profile.EditFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_edit" />
 </navigation>
