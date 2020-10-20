@@ -58,13 +58,4 @@
         android:text="Put"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btn_resend_sms"
-        android:text="60"
-        android:enabled="false"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="38dp"/>
-
 </LinearLayout>

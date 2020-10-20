@@ -31,11 +31,10 @@ public class PhoneFragment extends Fragment {
 
     private EditText editPhone, etCode, etNumber;
     private OnVerificationStateChangedCallbacks callBacks;
-    private Button btnConfirm, btnCarry, btnOpen, btnResendSms;
+    private Button btnConfirm, btnCarry, btnOpen;
     private String verificationId;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMilliSeconds = 60000;
-
+    private long timeLeftInMilliSeconds = 10000;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class PhoneFragment extends Fragment {
         editPhone = view.findViewById(R.id.etPhone);
         etCode = view.findViewById(R.id.et_code);
         etNumber = view.findViewById(R.id.etNumber);
-        btnResendSms = view.findViewById(R.id.btn_resend_sms);
 
         btnConfirm = view.findViewById(R.id.btn_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +84,6 @@ public class PhoneFragment extends Fragment {
             }
         });
 
-
         // по нажатию кнопки назад, он выходит
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -94,8 +91,7 @@ public class PhoneFragment extends Fragment {
                 requireActivity().finish();
             }
         });
-
-        setUpListeners(view);
+        clickOPenMenu(view);
     }
 
     private void startTimer() {
@@ -105,38 +101,22 @@ public class PhoneFragment extends Fragment {
                 timeLeftInMilliSeconds = l;
                 updateTimer();
             }
-
             @Override
             public void onFinish() {
-                btnResendSms.setEnabled(true);
+                editPhone.setVisibility(View.VISIBLE);
+                btnOpen.setVisibility(View.VISIBLE);
+                btnCarry.setVisibility(View.VISIBLE);
+                etNumber.setVisibility(View.VISIBLE);
+                etCode.setVisibility(View.GONE);
+                btnConfirm.setVisibility(View.GONE);
             }
         }.start();
     }
 
     private void updateTimer() {
         int seconds = (int) (timeLeftInMilliSeconds % 60000 / 1000);
-        btnResendSms.setText(String.valueOf(seconds));
+        btnConfirm.setText(String.valueOf(seconds));
 
-    }
-
-    private void setUpListeners(View view) {
-        clickOPenMenu(view);
-        clickResendSms(view);
-    }
-
-    private void clickResendSms(View view) {
-        btnResendSms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editPhone.setVisibility(View.VISIBLE);
-                btnOpen.setVisibility(View.VISIBLE);
-                btnCarry.setVisibility(View.VISIBLE);
-                etNumber.setVisibility(View.VISIBLE);
-                btnResendSms.setVisibility(View.GONE);
-                etCode.setVisibility(View.GONE);
-                btnConfirm.setVisibility(View.GONE);
-            }
-        });
     }
 
     private void clickOPenMenu(View view) {
@@ -149,7 +129,6 @@ public class PhoneFragment extends Fragment {
             }
         });
     }
-
 
     private void initCallBacks() {
         callBacks = new OnVerificationStateChangedCallbacks() {
@@ -166,14 +145,12 @@ public class PhoneFragment extends Fragment {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-
             }
 
             @Override
             // по истечению 60сек срабаотывает он
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                 super.onCodeAutoRetrievalTimeOut(s);
-
             }
 
             @Override
@@ -208,7 +185,7 @@ public class PhoneFragment extends Fragment {
         if (!phone.isEmpty()) {
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     phone,
-                    60,
+                    10,
                     TimeUnit.SECONDS,
                     requireActivity(),
                     callBacks);
@@ -216,7 +193,6 @@ public class PhoneFragment extends Fragment {
             btnOpen.setVisibility(View.GONE);
             btnCarry.setVisibility(View.GONE);
             etNumber.setVisibility(View.GONE);
-            btnResendSms.setVisibility(View.VISIBLE);
             etCode.setVisibility(View.VISIBLE);
             btnConfirm.setVisibility(View.VISIBLE);
         }
