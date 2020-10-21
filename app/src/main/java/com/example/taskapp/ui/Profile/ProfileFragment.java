@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,10 +102,11 @@ public class ProfileFragment extends Fragment {
                 etName();
             }
         });
-        if (!Prefs.instance.getName().isEmpty())
+        // проверка на ноль и на пустоту вместе
+        if (!TextUtils.isEmpty(Prefs.instance.getName())) {
             readFromFB();
-
-        getImageFromFB();
+            getImageFromFB();
+        }
 
     }
 

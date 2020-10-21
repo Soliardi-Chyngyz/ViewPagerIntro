@@ -34,7 +34,7 @@ public class PhoneFragment extends Fragment {
     private Button btnConfirm, btnCarry, btnOpen;
     private String verificationId;
     private CountDownTimer countDownTimer;
-    private long timeLeftInMilliSeconds = 10000;
+    private long timeLeftInMilliSeconds = 30000;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +109,7 @@ public class PhoneFragment extends Fragment {
                 etNumber.setVisibility(View.VISIBLE);
                 etCode.setVisibility(View.GONE);
                 btnConfirm.setVisibility(View.GONE);
+                btnConfirm.setEnabled(true);
             }
         }.start();
     }
