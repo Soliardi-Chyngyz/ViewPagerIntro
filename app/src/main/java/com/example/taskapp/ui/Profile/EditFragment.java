@@ -50,8 +50,8 @@ public class EditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 close();
-                saveToFirestore();
                 saveToProfile();
+                saveToFirestore();
             }
         });
 

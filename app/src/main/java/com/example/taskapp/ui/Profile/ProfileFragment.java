@@ -46,7 +46,7 @@ import java.util.Map;
 
 public class ProfileFragment extends Fragment {
     private LinearLayout cont, img;
-    private ImageView etImg, btnCom, btnReduct;
+    private ImageView etImg, btnReduct;
     private TextView txtName;
 
 
@@ -95,19 +95,18 @@ public class ProfileFragment extends Fragment {
         btnReduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                YoYo.with(Techniques.FadeOutDown)
-//                        .duration(700)
-//                        .repeat(1)
-//                        .playOn(btnCom);
                 etName();
             }
         });
+
         // проверка на ноль и на пустоту вместе
         if (!TextUtils.isEmpty(Prefs.instance.getName())) {
             readFromFB();
-            getImageFromFB();
         }
 
+        if (!Prefs.instance.getImage().isEmpty()){
+            getImageFromFB();
+        }
     }
 
     private void getImageFromFB() {
@@ -166,6 +165,14 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
+    private void etName() {
+        textFile();
+        Bundle bundle = new Bundle();
+        bundle.putString("text", txtName.getText().toString());
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_navigation_profile_to_editFragment, bundle);
+    }
+
     private void textFile() {
         getFragmentManager().setFragmentResultListener("id", this, new FragmentResultListener() {
             @Override
@@ -173,15 +180,6 @@ public class ProfileFragment extends Fragment {
                 txtName.setText(result.getString("id"));
             }
         });
-
-    }
-
-    private void etName() {
-        textFile();
-        Bundle bundle = new Bundle();
-        bundle.putString("text", txtName.getText().toString());
-        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        navController.navigate(R.id.action_navigation_profile_to_editFragment, bundle);
     }
 
     @Override
@@ -200,6 +198,7 @@ public class ProfileFragment extends Fragment {
                 img.setBackground(drawable);
             }
         });
+
         saveInFirestore(image);
     }
 
@@ -222,6 +221,4 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-
-
 }

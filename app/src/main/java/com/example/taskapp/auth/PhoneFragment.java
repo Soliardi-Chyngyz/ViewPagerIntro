@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -174,7 +175,7 @@ public class PhoneFragment extends Fragment {
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigateUp();
                 } else {
-                    //Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });

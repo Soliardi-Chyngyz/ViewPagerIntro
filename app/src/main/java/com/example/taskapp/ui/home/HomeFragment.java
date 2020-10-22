@@ -130,8 +130,8 @@ public class HomeFragment extends Fragment {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Уверен?")
-                        .setPositiveButton("Точно", dialogClickListener)
-                        .setNegativeButton("Не уверен", dialogClickListener).show();
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
 
                 // отправляет позицию -Ю-
 

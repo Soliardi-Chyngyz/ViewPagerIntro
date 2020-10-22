@@ -10,15 +10,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
+import com.example.taskapp.ui.home.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterDashboardFr extends RecyclerView.Adapter<AdapterDashboardFr.ViewHolder> {
     private List<Task> list = new ArrayList<>();
+    private ItemClickListener listener;
+
+    public AdapterDashboardFr(List<Task> list) {
+        this.list = list;
+    }
+
+    public AdapterDashboardFr() {
+
+    }
 
     public void addData(Task task) {
         list.add(task);
+        notifyDataSetChanged();
+    }
+
+    public void updateList(List<Task> list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+    public void deleteItem(int position){
+        list.remove(position);
         notifyDataSetChanged();
     }
 
@@ -30,8 +49,16 @@ public class AdapterDashboardFr extends RecyclerView.Adapter<AdapterDashboardFr.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.bind(list.get(position), position);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                listener.onLongClick(list.get(position).getTitle(),position);
+                notifyDataSetChanged();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -58,5 +85,14 @@ public class AdapterDashboardFr extends RecyclerView.Adapter<AdapterDashboardFr.
                 textTime.setText(task.getCreatedAt());
             }
         }
+    }
+
+    public void setOnItemListener(ItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    // создаем первым 1.1
+    public interface ItemClickListener {
+        void onLongClick(String title,int position);
     }
 }

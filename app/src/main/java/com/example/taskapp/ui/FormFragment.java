@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.example.taskapp.App;
 import com.example.taskapp.R;
 import com.example.taskapp.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -84,9 +87,11 @@ public class FormFragment extends Fragment {
             bundle.putSerializable("task", task);
             getParentFragmentManager().setFragmentResult("form", bundle);
         }
-        saveToFireStore(task);
+//        saveToFireStore(task);
+        saveSecondVariant(task);
     }
 
+    //добавление всех
     private void saveToFireStore(Task task) {
 
         FirebaseFirestore.getInstance()
@@ -102,6 +107,25 @@ public class FormFragment extends Fragment {
                 });
     }
 
+    // Добавление по 1 item
+    private void saveSecondVariant(Task task){
+        FirebaseFirestore.getInstance()
+                .collection("Tasks")
+                .document(task.getTitle())
+                .set(task).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e("TAG", "onSuccess: ");
+                close();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("TAG", "onFailure: " );
+
+            }
+        });
+    }
     private void close() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigateUp();
